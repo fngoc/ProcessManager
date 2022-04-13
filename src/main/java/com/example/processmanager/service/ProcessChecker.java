@@ -1,5 +1,7 @@
 package com.example.processmanager.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,17 +12,18 @@ import java.io.*;
 @Service
 public class ProcessChecker {
 
-    private final String CMD_CHECK;
-
-    private final String FIND;
-
+    private final String CHECK_CMD;
+    private final String WHAT_FIND;
     private final String WHAT_I_DO;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessChecker.class);
 
     @Autowired
     public ProcessChecker(ApplicationArguments arguments) {
-        this.CMD_CHECK = arguments.getSourceArgs()[0];
-        this.FIND = arguments.getSourceArgs()[1];
-        this.WHAT_I_DO = arguments.getSourceArgs()[2];
+        String[] args = arguments.getSourceArgs();
+        this.CHECK_CMD = args[0];
+        this.WHAT_FIND = args[1];
+        this.WHAT_I_DO = args[2];
     }
 
     @Scheduled(fixedDelay=5000)
@@ -30,7 +33,7 @@ public class ProcessChecker {
         Process p = null;
 
         try {
-            p = r.exec(CMD_CHECK);
+            p = r.exec(CHECK_CMD);
             p.getOutputStream().close();
 
             InputStream processStdOutput = p.getInputStream();
@@ -42,10 +45,10 @@ public class ProcessChecker {
             }
             p.waitFor();
 
-            if (new String(outCMD).contains(FIND)) {
-                System.out.println("Все хорошо сервис " + FIND + " работает");
+            if (new String(outCMD).contains(WHAT_FIND)) {
+                LOGGER.info("Все хорошо сервис " + WHAT_FIND + " работает");
             } else {
-                System.out.println("Что-то пошло не так, перезапускаю сервис " + FIND);
+                LOGGER.warn("Что-то пошло не так, перезапускаю сервис " + WHAT_FIND);
                 startService();
             }
         } catch (InterruptedException | IOException e) {
