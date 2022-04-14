@@ -1,4 +1,4 @@
-package com.example.processmanager.service;
+package org.vitmarkha.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +46,9 @@ public class ProcessChecker {
             p.waitFor();
 
             if (new String(outCMD).contains(WHAT_FIND)) {
-                LOGGER.info("Все хорошо сервис " + WHAT_FIND + " работает");
+                LOGGER.info("All good service " + WHAT_FIND + " works");
             } else {
-                LOGGER.warn("Что-то пошло не так, перезапускаю сервис " + WHAT_FIND);
+                LOGGER.warn("Something went wrong, I run the command: " + WHAT_I_DO);
                 startService();
             }
         } catch (InterruptedException | IOException e) {

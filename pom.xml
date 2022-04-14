@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
+    <groupId>org.vitmarkha</groupId>
     <artifactId>ProcessManager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ProcessManager</name>
@@ -32,6 +32,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>18</source>
+                    <target>18</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
